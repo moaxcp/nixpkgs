@@ -1,5 +1,6 @@
 {
-  enableXft ? true, libXft ? null, patches ? [], stdenv, lua, gettext, pkgconfig, xlibsWrapper, libXinerama, libXrandr, libX11,
+  enableXft ? true, libXft ? null, patches ? [], stdenv, lua, gettext, 
+  pkgconfig, xlibsWrapper, libXinerama, libXrandr, libX11, libXext, libSM,
   xterm, xmessage, makeWrapper, fetchFromGitHub, mandoc, which
 }:
 
@@ -7,7 +8,7 @@ assert enableXft -> libXft != null;
 
 let
   pname = "notion";
-  version = "3-2017050501";
+  version = "3-2019050101";
   inherit patches;
 in
 stdenv.mkDerivation {
@@ -17,13 +18,13 @@ stdenv.mkDerivation {
     homepage = http://notion.sourceforge.net;
     platforms = platforms.linux;
     license   = licenses.notion_lgpl;
-    maintainers = with maintainers; [jfb];
+    maintainers = with maintainers; [ jfb moaxcp ];
   };
   src = fetchFromGitHub {
     owner = "raboof";
     repo = pname;
     rev = version;
-    sha256 = "1wq5ylpsw5lkbm3c2bzmx2ajlngwib30adxlqbvq4bgkaf9zjh65";
+    sha256 = "09kvgqyw0gnj3jhz9gmwq81ak8qy32vyanx1hw79r6m181aysspz";
   };
 
   patches = patches;
@@ -33,7 +34,8 @@ stdenv.mkDerivation {
   '';
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [makeWrapper xlibsWrapper lua gettext mandoc which libXinerama libXrandr libX11 ] ++ stdenv.lib.optional enableXft libXft;
+  buildInputs = [makeWrapper xlibsWrapper lua gettext mandoc which libXinerama 
+  libXrandr libX11 libXext libSM] ++ stdenv.lib.optional enableXft libXft;
 
   buildFlags = "LUA_DIR=${lua} X11_PREFIX=/no-such-path PREFIX=\${out}";
   installFlags = "PREFIX=\${out}";
