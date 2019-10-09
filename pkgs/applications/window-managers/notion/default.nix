@@ -1,6 +1,6 @@
 {
   enableXft ? true, libXft ? null, patches ? [], stdenv, lua, gettext, 
-  pkgconfig, xlibsWrapper, libXinerama, libXrandr, libX11, libXext, libSM,
+  pkgconfig, xlibsWrapper, libXinerama, libXrandr, libX11, libXext, libSM, fontconfig,
   xterm, xmessage, makeWrapper, fetchFromGitHub, mandoc, which
 }:
 
@@ -35,7 +35,7 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [makeWrapper xlibsWrapper lua gettext mandoc which libXinerama 
-  libXrandr libX11 libXext libSM] ++ stdenv.lib.optional enableXft libXft;
+  libXrandr libX11 libXext libSM fontconfig] ++ stdenv.lib.optional enableXft libXft;
 
   buildFlags = "LUA_DIR=${lua} X11_PREFIX=/no-such-path PREFIX=\${out}";
   installFlags = "PREFIX=\${out}";
